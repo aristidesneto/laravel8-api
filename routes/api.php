@@ -15,13 +15,6 @@ Route::middleware(['auth:api', 'tenant'])->prefix('v1')->group(function () {
 
     Route::get('authenticated/me', [LoginController::class, 'getAuthenticatedUser'])->name('me');
 
-    // Users
-//    Route::get('users', [UserController::class, 'index']);
-//    Route::get('users/{uuid}', [UserController::class, 'show']);
-//    Route::post('users', [UserController::class, 'store']);
-//    Route::put('users/{uuid}', [UserController::class, 'update']);
-//    Route::delete('users/{uuid}', [UserController::class, 'destroy']);
-
     // Residents
     Route::get('residents', [ResidentController::class, 'index'])->name('residents.index');
     Route::get('residents/{uuid}', [ResidentController::class, 'show'])->name('residents.show');
