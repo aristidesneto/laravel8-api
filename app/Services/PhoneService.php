@@ -3,47 +3,44 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Resources\PhoneResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PhoneService
 {
+    public function getPhones(Model $model) : AnonymousResourceCollection
+    {
+        return PhoneResource::collection($model->phones);
+    }
+
     public function make(array $data, User $user) : bool
     {
-        $skipMain = false;
-        foreach ($data as $phone) {
-            $user->phones()->create([
-                'type' => $phone['type'],
-                'number' => $phone['number'],
-                'main' => !$skipMain ? $phone['main'] : false
-            ]);
-
-            if ($phone['main'] == 1) {
-                $skipMain = true;
-            }
+        if ($data['main'] == 1) {
+            $this->setAllMainPhoneToFalse($user);
         }
 
-        return true;
+        $create = $user->phones()->create([
+            'type' => $data['type'],
+            'number' => $data['number'],
+            'main' => $data['main']
+        ]);
+
+        return $create ? true : false;
     }
 
     public function update(array $data, User $user) : bool
     {
-        $this->setAllMainPhoneToFalse($user);
-
-        $skipMain = false;
-        foreach ($data as $phone) {
-
-            $user->phones()->find($phone['id'])->update([
-                'type' => $phone['type'],
-                'number' => $phone['number'],
-                'main' => !$skipMain ? $phone['main'] : false
-            ]);
-
-            if ($phone['main'] == 1) {
-                $skipMain = true;
-            }
+        if ($data['main'] == 1) {
+            $this->setAllMainPhoneToFalse($user);
         }
 
-        return true;
+        return $user->phones()->find($data['id'])->update([
+            'type' => $data['type'],
+            'number' => $data['number'],
+            'main' => $data['main']
+        ]);
     }
 
     private function setAllMainPhoneToFalse(User $user) : void

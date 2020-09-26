@@ -36,7 +36,12 @@ class Tenant extends Model
     {
         static::creating(function (Model $model) {
             $model->uuid = Uuid::uuid4();
-            $model->slug = Str::kebab($model->name);
+
+            $slug = $model->slug === config('tenant.admin_tenant', 'master')
+                ? config('tenant.admin_tenant', 'master')
+                : Str::slug($model->name, '-');
+
+            $model->slug = $slug;
         });
     }
 

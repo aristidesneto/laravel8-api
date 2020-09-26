@@ -38,9 +38,7 @@ class ResidentService implements Service
         $data['user_id'] = $user->id;
         $resident = Resident::create($data);
 
-        $phones = (new PhoneService())->make($data['phones'], $user);
-
-        if ($user && $resident && $phones) {
+        if ($user && $resident) {
             DB::commit();
             return true;
         }
@@ -64,9 +62,7 @@ class ResidentService implements Service
             $user = User::find($resident->user_id);
             $user->fill($data);
 
-            $phones = (new PhoneService())->update($data['phones'], $user);
-
-            if ($user->update($data) && $phones) {
+            if ($user->update($data)) {
                 DB::commit();
                 return true;
             }

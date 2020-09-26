@@ -102,8 +102,7 @@ class LoginController extends Controller
             'minutes' => 1440,
             'path' => null,
             'domain' => null,
-            // 'secure' => true, // for production
-            'secure' => null, // for localhost
+            'secure' => config('tenant.token_secure', null),
             'httponly' => true,
             'samesite' => true,
         ];
@@ -115,7 +114,7 @@ class LoginController extends Controller
         $cookie = Cookie::forget($this->tokenName);
 
         return response()->json([
-            'message' => 'successful-logout'
+            'message' => 'successful logout'
         ])->withCookie($cookie);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Resources\ResidentResource;
 use App\Models\Resident;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Services\PhoneService;
 use App\Services\ResidentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +89,51 @@ class ResidentController extends Controller
         return response()->json([
             'status' => 'error',
             'message' => 'Erro para remover o registro'
+        ], 400);
+    }
+
+    public function phones(string $uuid)
+    {
+        $resident = Resident::with('user')->where('uuid', $uuid)->first();
+        $phones = (new PhoneService())->getPhones($resident->user);
+
+        return response()->json($phones, 200);
+    }
+
+    public function phoneUpdate(Request $request, string $uuid)
+    {
+        $resident = Resident::with('user')->where('uuid', $uuid)->first();
+        $update = (new PhoneService())->update($request->all(), $resident->user);
+
+        if ($update) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro alterado com sucesso'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro para alterar o registro'
+        ], 400);
+
+    }
+
+    public function phoneStore(Request $request)
+    {
+        $resident = Resident::with('user')->where('uuid', $request->uuid)->first();
+        $store = (new PhoneService())->make($request->all(), $resident->user);
+
+        if ($store) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cadastro realizado com sucesso'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro para realizar o cadastro'
         ], 400);
     }
 }

@@ -19,16 +19,16 @@ class ResidentResource extends JsonResource
             'bloco' => $this->bloco,
             'apartamento' => $this->apartamento,
             'tipo' => $this->tipo,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'name' => $this->user->name,
             'email' => $this->user->email,
-            'tenant' => $this->user->tenant->name,
-            'city' => $this->user->tenant->city . '/' . $this->user->tenant->state,
+            'tenant_uuid' => $this->user->tenant->uuid,
+            'tenant_name' => $this->user->tenant->name,
+            'tenant_city' => $this->user->tenant->city . '/' . $this->user->tenant->state,
             'cpf' => $this->user->cpf,
-            'birthday' => $this->user->birthday,
+            'birthday' => $this->user->birthday->format('d/m/Y'),
             'phones' => PhoneResource::collection($this->user->phones),
-            'active' => $this->user->active
+            'active' => $this->user->active,
+            'created_at' => $this->user->created_at->format('d/m/Y')
         ];
     }
 }

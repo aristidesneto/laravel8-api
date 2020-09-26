@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
+use App\Services\PhoneService;
 use App\Services\TenantService;
 use Illuminate\Http\Request;
 
@@ -82,5 +84,13 @@ class TenantController extends Controller
             'status' => 'error',
             'message' => 'Erro para remover o registro'
         ], 400);
+    }
+
+    public function phones(string $uuid)
+    {
+        $tenant = Tenant::where('uuid', $uuid)->first();
+        $phones = (new PhoneService())->getPhones($tenant);
+
+        return response()->json($phones, 200);
     }
 }

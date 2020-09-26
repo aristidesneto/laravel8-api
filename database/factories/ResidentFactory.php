@@ -23,8 +23,6 @@ class ResidentFactory extends Factory
     public function definition()
     {
         return [
-            // 'tenant_id' => rand(2, 3),
-            'uuid' => $this->faker->uuid,
             'bloco' => strtoupper($this->faker->randomLetter) . rand(1, 99),
             'apartamento' => rand(90, 200),
             'tipo' => $this->faker->randomElement(['inquilino', 'proprietario'])

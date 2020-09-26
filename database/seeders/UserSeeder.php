@@ -17,12 +17,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-//        $tenant = Tenant::get()->first();
-
         // Tenant 1
         \Tenant::setTenant(Tenant::find(1));
         User::create([
-            'uuid' => Uuid::uuid4(),
             'name' => 'Administrador',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),

@@ -19,6 +19,7 @@ class AddHeaderRequestMiddleware
         $token = $request->cookie(config('tenant.token_name', 'token'));
 
         $request->headers->add([
+            'Access-Control-Allow-Origin' => '*',
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $token
         ]);

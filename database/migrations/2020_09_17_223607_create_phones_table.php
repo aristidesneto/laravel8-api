@@ -15,8 +15,8 @@ class CreatePhonesTable extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->index();
             $table->unsignedBigInteger('tenant_id');
+            $table->uuid('uuid')->index();
             $table->morphs('phoneable');
             $table->enum('type', ['celular', 'residencial', 'recado', 'trabalho']);
             $table->string('number');

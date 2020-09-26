@@ -23,10 +23,10 @@ class TenantMiddleware
             \Tenant::setTenant($tenant);
         }
 
-
         // Condição para usuário master quando for realizar um cadastro no sistema
         if ($request->method() === 'POST' && \Tenant::isTenantMaster($tenant)) {
-            $tenant = Tenant::where('uuid', $request->tenant)->firstOrFail();
+            $uuid = $request->tenant ?? $request->tenant_uuid;
+            $tenant = Tenant::where('uuid', $uuid)->firstOrFail();
             \Tenant::setTenant($tenant);
         }
 
