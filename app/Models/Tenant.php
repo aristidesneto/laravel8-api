@@ -39,4 +39,9 @@ class Tenant extends Model
             $model->slug = Str::kebab($model->name);
         });
     }
+
+    public function phones()
+    {
+        return $this->morphMany(Phone::class, 'phoneable');
+    }
 }

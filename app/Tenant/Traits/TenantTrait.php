@@ -4,6 +4,7 @@ namespace App\Tenant\Traits;
 
 use App\Models\Tenant;
 use App\Tenant\Scopes\TenantScope;
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 

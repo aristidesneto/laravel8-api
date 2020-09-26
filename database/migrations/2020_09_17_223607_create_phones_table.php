@@ -15,8 +15,9 @@ class CreatePhonesTable extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->index();
             $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('user_id');
+            $table->morphs('phoneable');
             $table->enum('type', ['celular', 'residencial', 'recado', 'trabalho']);
             $table->string('number');
             $table->boolean('main')->default(false);
@@ -24,7 +25,6 @@ class CreatePhonesTable extends Migration
             $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

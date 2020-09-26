@@ -26,6 +26,7 @@ class TenantResource extends JsonResource
             'cep' => $this->cep,
             'city' => $this->city,
             'state' => $this->state,
+            'phones' => PhoneResource::collection($this->phones),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

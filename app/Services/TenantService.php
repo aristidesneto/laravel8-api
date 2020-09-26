@@ -45,7 +45,8 @@ class TenantService implements Service
 
     public function show(string $uuid) : TenantResource
     {
-        $tenant = Tenant::where('uuid', $uuid)->first();
+        $tenant = Tenant::with('phones')
+                        ->where('uuid', $uuid)->first();
 
         return new TenantResource($tenant);
     }

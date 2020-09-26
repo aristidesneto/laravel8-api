@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Tenant;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,14 @@ class TenantMiddleware
     {
         $tenant = \Auth::user()->tenant;
 
-        if ($tenant->slug !== config('tenant.admin_tenant')) {
+        if (!\Tenant::isTenantMaster($tenant)) {
+            \Tenant::setTenant($tenant);
+        }
+
+
+        // Condição para usuário master quando for realizar um cadastro no sistema
+        if ($request->method() === 'POST' && \Tenant::isTenantMaster($tenant)) {
+            $tenant = Tenant::where('uuid', $request->tenant)->firstOrFail();
             \Tenant::setTenant($tenant);
         }
 

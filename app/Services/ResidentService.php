@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Http\Resources\ResidentResource;
+use App\Models\Phone;
 use App\Models\Resident;
 use App\Models\Tenant;
 use App\Models\User;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class ResidentService implements Service
 {
-    protected int $paginate = 15;
+    protected int $paginate = 150;
 
     public function list() : AnonymousResourceCollection
     {
@@ -24,13 +25,8 @@ class ResidentService implements Service
 
     public function make(array $data) : bool
     {
-        if (!$data['tenant']) {
-            return false;
-        }
-
         DB::beginTransaction();
 
-        $data['tenant_id'] = Tenant::where('uuid', $data['tenant'])->first()->id;
         $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday']);
         $data['cpf'] = validateCpf($data['cpf']);
         $data['password'] = bcrypt('password');
@@ -42,7 +38,9 @@ class ResidentService implements Service
         $data['user_id'] = $user->id;
         $resident = Resident::create($data);
 
-        if ($user && $resident) {
+        $phones = (new PhoneService())->make($data['phones'], $user);
+
+        if ($user && $resident && $phones) {
             DB::commit();
             return true;
         }
@@ -66,7 +64,9 @@ class ResidentService implements Service
             $user = User::find($resident->user_id);
             $user->fill($data);
 
-            if ($user->update($data)) {
+            $phones = (new PhoneService())->update($data['phones'], $user);
+
+            if ($user->update($data) && $phones) {
                 DB::commit();
                 return true;
             }
@@ -93,7 +93,7 @@ class ResidentService implements Service
 
     public function show(string $uuid) : ResidentResource
     {
-        $resident = Resident::with('user.tenant')
+        $resident = Resident::with('user.tenant', 'user.phones')
                         ->where('uuid', $uuid)
                         ->first();
 

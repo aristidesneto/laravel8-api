@@ -34,4 +34,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Resident::class);
     }
+
+    public function phones()
+    {
+        return $this->morphMany(Phone::class, 'phoneable');
+    }
 }

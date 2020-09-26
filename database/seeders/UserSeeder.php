@@ -17,10 +17,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $tenant = Tenant::get()->first();
+//        $tenant = Tenant::get()->first();
 
+        // Tenant 1
+        \Tenant::setTenant(Tenant::find(1));
         User::create([
-            'tenant_id' => $tenant->id,
             'uuid' => Uuid::uuid4(),
             'name' => 'Administrador',
             'email' => 'admin@admin.com',
@@ -33,15 +34,17 @@ class UserSeeder extends Seeder
         // Tenant 2
         \Tenant::setTenant(Tenant::find(2));
         User::factory()
-            ->times(50)
+            ->times(2)
             ->hasResident()
+            ->hasPhones()
             ->create();
 
         // Tenant 3
         \Tenant::setTenant(Tenant::find(3));
         User::factory()
-            ->times(50)
+            ->times(2)
             ->hasResident()
+            ->hasPhones()
             ->create();
     }
 }

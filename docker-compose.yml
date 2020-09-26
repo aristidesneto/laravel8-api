@@ -29,6 +29,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+      TZ: "America/Sao_Paulo"
     ports:
       - 8005:3306
     volumes:

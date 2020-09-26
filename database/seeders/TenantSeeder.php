@@ -56,7 +56,7 @@ class TenantSeeder extends Seeder
         ];
 
         foreach ($list as $item) {
-            Tenant::create([
+            $tenant = Tenant::create([
                 'uuid' => Uuid::uuid4(),
                 'name' => $item['name'],
                 'slug' => $item['slug'],
@@ -68,6 +68,15 @@ class TenantSeeder extends Seeder
                 'cep' => $item['cep'],
                 'city' => $item['city'],
                 'state' => $item['state'],
+            ]);
+
+            \Tenant::setTenant($tenant);
+
+            $phones = ['celular', 'recado', 'residencial', 'trabalho'];
+            $tenant->phones()->create([
+                'type' => 'recado',
+                'number' => random_int(10000000, 20000000),
+                'main' => false
             ]);
         }
     }

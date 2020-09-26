@@ -18,4 +18,9 @@ class TenantManager
     {
         $this->tenant = $tenant;
     }
+
+    public function isTenantMaster(Tenant $tenant) : bool
+    {
+        return $tenant->slug === config('tenant.admin_tenant');
+    }
 }
