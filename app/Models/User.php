@@ -30,6 +30,13 @@ class User extends Authenticatable
         'created_at', 'updated_at', 'birthday'
     ];
 
+    public function fill(array $attributes)
+    {
+        !isset($attributes['password']) ?: $attributes['password'] = bcrypt($attributes['password']);
+
+        return parent::fill($attributes);
+    }
+
     public function userable()
     {
         return $this->morphTo();

@@ -21,10 +21,10 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'cpf' => $this->cpf,
             'birthday' => $this->birthday->format('d/m/Y'),
-            'active' => $this->active,
             'created_at' => $this->created_at->format('d/m/Y'),
-            'tenant' => new TenantResource($this->tenant),
-            'resident' => new ResidentResource($this->resident)
+            'active' => $this->active,
+            'phones' => PhoneResource::collection($this->phones),
+            'tenant' => new TenantResource($this->tenant)
         ];
     }
 }
