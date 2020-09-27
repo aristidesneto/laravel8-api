@@ -22,9 +22,17 @@ class PhoneFactory extends Factory
      */
     public function definition()
     {
+        $list = [
+            '5839740108',
+            '56997844574',
+            '25358368729',
+            '3198042030',
+            '26872760766',
+        ];
+
         return [
             'type' => $this->faker->randomElement(['celular', 'recado', 'residencial', 'trabalho']),
-            'number' => $this->faker->phoneNumber,
+            'number' => $this->faker->randomElement($list),
             'main' => false
         ];
     }

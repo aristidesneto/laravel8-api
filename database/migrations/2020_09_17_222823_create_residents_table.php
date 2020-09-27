@@ -16,7 +16,7 @@ class CreateResidentsTable extends Migration
         Schema::create('residents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tenant_id');
-            $table->unsignedBigInteger('user_id');
+//            $table->unsignedBigInteger('user_id');
             $table->uuid('uuid')->index();
             $table->string('bloco');
             $table->string('apartamento')->comment('Número do apartamento');
@@ -25,7 +25,7 @@ class CreateResidentsTable extends Migration
             $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants');
-            $table->foreign('user_id')->references('id')->on('users');
+//            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

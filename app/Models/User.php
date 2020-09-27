@@ -30,10 +30,15 @@ class User extends Authenticatable
         'created_at', 'updated_at', 'birthday'
     ];
 
-    public function resident()
+    public function userable()
     {
-        return $this->hasOne(Resident::class);
+        return $this->morphTo();
     }
+
+//    public function resident()
+//    {
+//        return $this->hasOne(Resident::class);
+//    }
 
     public function phones()
     {

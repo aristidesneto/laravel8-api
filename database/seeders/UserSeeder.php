@@ -28,20 +28,18 @@ class UserSeeder extends Seeder
             'birthday' => '1987-08-28'
         ]);
 
-        // Tenant 2
-        \Tenant::setTenant(Tenant::find(2));
-        User::factory()
-            ->times(2)
-            ->hasResident()
-            ->hasPhones()
-            ->create();
-
-        // Tenant 3
-        \Tenant::setTenant(Tenant::find(3));
-        User::factory()
-            ->times(2)
-            ->hasResident()
-            ->hasPhones()
-            ->create();
+//        // Tenant 2
+//        \Tenant::setTenant(Tenant::find(2));
+//        User::factory()
+//            ->times(5)
+//            ->hasPhones()
+//            ->create();
+//
+//        // Tenant 3
+//        \Tenant::setTenant(Tenant::find(3));
+//        User::factory()
+//            ->count(5)
+//            ->hasPhones()
+//            ->create();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -28,6 +29,9 @@ Route::middleware(['auth:api', 'tenant'])->prefix('v1')->group(function () {
     Route::get('resident/phones/{uuid}', [ResidentController::class, 'phones'])->name('residents.phones');
     Route::put('resident/phone/{uuid}', [ResidentController::class, 'phoneUpdate'])->name('residents.phones.update');
     Route::post('resident/phone', [ResidentController::class, 'phoneStore'])->name('residents.phones.store');
+
+    // Roles
+    Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
 
     Route::middleware('tenant.master')->group(function () {
 

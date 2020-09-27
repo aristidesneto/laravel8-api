@@ -21,6 +21,6 @@ class Resident extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphOne(User::class, 'userable');
     }
 }
