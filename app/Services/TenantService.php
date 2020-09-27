@@ -13,7 +13,11 @@ class TenantService implements Service
 
     public function list(): AnonymousResourceCollection
     {
-        return TenantResource::collection(Tenant::orderBy('name')->paginate($this->paginate));
+        $tenantMaster = config('tenant.admin_tenant');
+
+        return TenantResource::collection(
+            Tenant::where('slug', '<>', $tenantMaster)->orderBy('name')->paginate($this->paginate)
+        );
     }
 
     public function make(array $data): bool

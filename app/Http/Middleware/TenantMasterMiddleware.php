@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AddHeaderRequestMiddleware
+class TenantMasterMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,13 @@ class AddHeaderRequestMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->cookie(config('tenant.token_name', 'token'));
+        $tenant = \Auth::user()->tenant;
 
-        $request->headers->add([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $token
-        ]);
+        if (!\Tenant::isTenantMaster($tenant)) {
+            return response()->json([
+                'message' => 'Acesso negado'
+            ], 401);
+        }
 
         return $next($request);
     }
