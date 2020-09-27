@@ -15,6 +15,8 @@ class TenantController extends Controller
     public function __construct(TenantService $tenantService)
     {
         $this->tenantService = $tenantService;
+
+        $this->middleware('tenant')->except('store');
     }
 
     public function index()
@@ -49,7 +51,7 @@ class TenantController extends Controller
             return response()->json($tenant, 200);
         }
 
-        return response()->json([], 404);
+        return response()->json(['message' => 'Registro não encontrado'], 404);
     }
 
     public function update(Request $request, string $uuid)

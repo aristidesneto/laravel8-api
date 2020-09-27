@@ -27,11 +27,6 @@ class Tenant extends Model
         'avatar'
     ];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
     protected static function booted()
     {
         static::creating(function (Model $model) {
@@ -43,6 +38,11 @@ class Tenant extends Model
 
             $model->slug = $slug;
         });
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 
     public function phones()

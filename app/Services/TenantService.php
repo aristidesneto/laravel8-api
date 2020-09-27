@@ -13,10 +13,8 @@ class TenantService implements Service
 
     public function list(): AnonymousResourceCollection
     {
-        $tenantMaster = config('tenant.admin_tenant');
-
         return TenantResource::collection(
-            Tenant::where('slug', '<>', $tenantMaster)->orderBy('name')->paginate($this->paginate)
+            Tenant::orderBy('name')->paginate($this->paginate)
         );
     }
 
@@ -31,10 +29,10 @@ class TenantService implements Service
     public function update(array $data, string $uuid): bool
     {
         $tenant = Tenant::where('uuid', $uuid)->first();
-        $tenant->fill($data);
 
-        if ($tenant->update($data)) {
-            return true;
+        if ($tenant) {
+            $tenant->fill($data);
+            return $tenant->update($data);
         }
 
         return false;
@@ -44,14 +42,18 @@ class TenantService implements Service
     {
         $tenant = Tenant::where('uuid', $uuid)->first();
 
-        return $tenant->delete();
+        if ($tenant && $tenant->delete()) {
+            return true;
+        }
+
+        return false;
     }
 
-    public function show(string $uuid) : TenantResource
+    public function show(string $uuid) : ?TenantResource
     {
         $tenant = Tenant::with('phones')
                         ->where('uuid', $uuid)->first();
 
-        return new TenantResource($tenant);
+        return $tenant ? new TenantResource($tenant) : null;
     }
 }

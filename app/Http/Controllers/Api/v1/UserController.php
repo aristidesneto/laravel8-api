@@ -36,7 +36,12 @@ class UserController extends Controller
     {
         $user = (new UserService())->show($uuid);
 
-        return response()->json($user ?? ['message' => 'Usuário não encontrado'], 200);
+        if ($user) {
+            return response()->json($user, 200);
+        }
+
+        return response()->json(['message' => 'Usuário não encontrado'], 404);
+
     }
 
     public function update(Request $request, string $uuid)

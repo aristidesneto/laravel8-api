@@ -27,16 +27,16 @@ Route::middleware(['auth:api', 'tenant'])->prefix('v1')->group(function () {
     // Roles
     Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
 
-    // Tenant master
-    Route::middleware('tenant.master')->group(function () {
+});
 
-        // Tenants
-        Route::apiResource('tenants', TenantController::class);
-        Route::get('tenant/phones/{uuid}', [TenantController::class, 'phones'])->name('tenants.phones');
 
-        // Users
-        Route::apiResource('users', UserController::class);
+Route::middleware(['auth:api', 'tenant.master'])->prefix('v1')->group(function () {
 
-    });
+    // Tenants
+    Route::apiResource('tenants', TenantController::class);
+    Route::get('tenant/phones/{uuid}', [TenantController::class, 'phones'])->name('tenants.phones');
+
+    // Users
+    Route::apiResource('users', UserController::class);
 
 });

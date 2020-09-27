@@ -11,9 +11,13 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserService implements Service
 {
+    protected int $paginate = 15;
+
     public function list(): AnonymousResourceCollection
     {
-        return UserResource::collection(User::with('tenant')->get());
+        return UserResource::collection(
+            User::with('tenant')->orderBy('name')->paginate($this->paginate)
+        );
     }
 
     public function make(array $data): bool
@@ -24,11 +28,7 @@ class UserService implements Service
         $user = new User();
         $user->fill($data);
 
-        if ($user->create($data)) {
-            return true;
-        }
-
-        return false;
+        return $user->create($data) ? true : false;
     }
 
     public function update(array $data, string $uuid): bool
