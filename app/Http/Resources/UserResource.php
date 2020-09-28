@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'birthday' => $this->birthday->format('d/m/Y'),
             'created_at' => $this->created_at->format('d/m/Y'),
             'active' => $this->active,
+            'isMaster' => \Tenant::isTenantMaster($this->tenant),
             'phones' => PhoneResource::collection($this->phones),
             'tenant' => new TenantResource($this->tenant)
         ];

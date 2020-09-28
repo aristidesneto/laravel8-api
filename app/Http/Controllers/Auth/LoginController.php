@@ -64,6 +64,7 @@ class LoginController extends Controller
 
         // Obter ID do tenant
         $user = User::where('email', $loginData['email'])->first();
+//        dd($user);
 
         if (!$user) {
             return response()->json([

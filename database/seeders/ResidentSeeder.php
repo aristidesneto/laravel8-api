@@ -18,7 +18,7 @@ class ResidentSeeder extends Seeder
     {
         \Tenant::setTenant(Tenant::find(2));
         Resident::factory()
-            ->times(5)
+            ->times(50)
             ->has(
                 User::factory()->hasPhones()
             )
@@ -26,7 +26,7 @@ class ResidentSeeder extends Seeder
 
         \Tenant::setTenant(Tenant::find(3));
         Resident::factory()
-            ->times(5)
+            ->times(50)
             ->hasUser()
             ->create();
     }
