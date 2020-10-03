@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Http\Resources\TenantResource;
+use App\Models\Phone;
 use App\Models\Tenant;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class TenantService implements Service
 {
@@ -20,10 +22,34 @@ class TenantService implements Service
 
     public function make(array $data): bool
     {
+        DB::beginTransaction();
+
         $tenant = new Tenant();
         $tenant->fill($data);
 
-        return $tenant->create($data) ? true : false;
+        $tenant = $tenant->create($data);
+
+        if ($tenant) {
+
+            if (isset($data['phones']) && $data['phones'] != null) {
+                foreach ($data['phones'] as $value) {
+                    $value['tenant_id'] = $tenant->id;
+                    $phone = new Phone($value);
+                    $phone = $tenant->phones()->save($phone);
+                }
+
+                if (!$phone) {
+                    DB::rollBack();
+                    return false;
+                }
+            }
+
+            DB::commit();
+            return true;
+        }
+
+        DB::rollBack();
+        return false;
     }
 
     public function update(array $data, string $uuid): bool

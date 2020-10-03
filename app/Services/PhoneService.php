@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Http\Resources\PhoneResource;
+use App\Models\Phone;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -15,37 +16,43 @@ class PhoneService
         return PhoneResource::collection($model->phones);
     }
 
-    public function make(array $data, User $user) : bool
+    public function make(array $data, Model $model) : bool
     {
-        if ($data['main'] == 1) {
-            $this->setAllMainPhoneToFalse($user);
+        foreach ($data as $item) {
+            if ($item['main'] == 1) {
+                $this->setAllMainPhoneToFalse($model);
+            }
+//            dd($model);
+            $create = $model->phones()->create([
+                'type' => $item['type'],
+                'number' => $item['number'],
+                'main' => $item['main']
+            ]);
+
+            if (!$create) {
+                return false;
+            }
         }
 
-        $create = $user->phones()->create([
+        return true;
+    }
+
+    public function update(array $data, Model $model) : bool
+    {
+        if ($data['main'] == 1) {
+            $this->setAllMainPhoneToFalse($model);
+        }
+
+        return $model->phones()->find($data['id'])->update([
             'type' => $data['type'],
             'number' => $data['number'],
             'main' => $data['main']
         ]);
-
-        return $create ? true : false;
     }
 
-    public function update(array $data, User $user) : bool
+    private function setAllMainPhoneToFalse(Model $model) : void
     {
-        if ($data['main'] == 1) {
-            $this->setAllMainPhoneToFalse($user);
-        }
-
-        return $user->phones()->find($data['id'])->update([
-            'type' => $data['type'],
-            'number' => $data['number'],
-            'main' => $data['main']
-        ]);
-    }
-
-    private function setAllMainPhoneToFalse(User $user) : void
-    {
-        $phones = $user->phones;
+        $phones = $model->phones;
 
         foreach ($phones as $phone) {
             $phone->update([
