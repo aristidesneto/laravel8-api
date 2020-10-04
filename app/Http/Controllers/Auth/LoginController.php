@@ -34,26 +34,26 @@ class LoginController extends Controller
         return response()->json(['status' => 'user not logging'], 401);
     }
 
-    public function register(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|max:55',
-            'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed'
-        ]);
-
-        $validatedData['password'] = bcrypt($request->password);
-
-        $user = User::create($validatedData);
-
-        $token = $user->createToken('authToken')->accessToken;
-
-        return response()->json([
-            'status' => 'success',
-            'user' => new UserResource($user),
-            'token' => $token
-        ]);
-    }
+//    public function register(Request $request)
+//    {
+//        $validatedData = $request->validate([
+//            'name' => 'required|max:55',
+//            'email' => 'email|required|unique:users',
+//            'password' => 'required|confirmed'
+//        ]);
+//
+//        $validatedData['password'] = bcrypt($request->password);
+//
+//        $user = User::create($validatedData);
+//
+//        $token = $user->createToken('authToken')->accessToken;
+//
+//        return response()->json([
+//            'status' => 'success',
+//            'user' => new UserResource($user),
+//            'token' => $token
+//        ]);
+//    }
 
     public function login(Request $request)
     {
@@ -64,13 +64,12 @@ class LoginController extends Controller
 
         // Obter ID do tenant
         $user = User::where('email', $loginData['email'])->first();
-//        dd($user);
 
         if (!$user) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Credenciais inválidas'
-            ]);
+            ], 422);
         }
 
         $tenant = Tenant::where('id', $user->tenant_id)->first();
@@ -81,7 +80,7 @@ class LoginController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Credenciais inválidas'
-            ]);
+            ], 422);
         }
 
         $token = auth()->user()->createToken('authToken')->accessToken;
@@ -122,6 +121,6 @@ class LoginController extends Controller
 
         return response()->json([
             'message' => 'successful logout'
-        ])->withCookie($cookie);
+        ], 200)->withCookie($cookie);
     }
 }

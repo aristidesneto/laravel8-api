@@ -54,6 +54,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "test": [
+            "vendor/bin/phpunit"
+        ],
         "post-update-cmd": [
             "php artisan ide-helper:generate",
             "php artisan ide-helper:meta"
