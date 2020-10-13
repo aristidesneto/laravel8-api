@@ -72,7 +72,7 @@ class TenantSeeder extends Seeder
             $phones = ['celular', 'recado', 'residencial', 'trabalho'];
             $tenant->phones()->create([
                 'type' => 'recado',
-                'number' => random_int(10000000, 20000000),
+                'number' => '1239110578',
                 'main' => false
             ]);
         }

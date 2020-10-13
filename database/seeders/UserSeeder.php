@@ -27,19 +27,5 @@ class UserSeeder extends Seeder
             'cpf' => '53674024020',
             'birthday' => '1987-08-28'
         ]);
-
-//        // Tenant 2
-//        \Tenant::setTenant(Tenant::find(2));
-//        User::factory()
-//            ->times(5)
-//            ->hasPhones()
-//            ->create();
-//
-//        // Tenant 3
-//        \Tenant::setTenant(Tenant::find(3));
-//        User::factory()
-//            ->count(5)
-//            ->hasPhones()
-//            ->create();
     }
 }

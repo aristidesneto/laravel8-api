@@ -90,14 +90,8 @@ class LoginController extends Controller
         return response()->json([
             'status' => 'success',
             'user' => new UserResource(auth()->user()),
-        ], 200)->withCookie(
-            $cookie['name'],
-            $cookie['value'],
-            $cookie['minutes'],
-            $cookie['path'],
-            $cookie['domain'],
-            $cookie['secure']
-        );
+        ], 200)
+            ->withCookie($cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure']);
     }
 
     private function getCookieDetails($token)

@@ -102,6 +102,7 @@ class ResidentController extends Controller
 
     public function phoneUpdate(Request $request, string $uuid)
     {
+//        dd($request->all(), $uuid);
         $resident = Resident::with('user')->where('uuid', $uuid)->first();
         $update = (new PhoneService())->update($request->all(), $resident->user);
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Http\Resources\PhoneResource;
-use App\Models\Phone;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -18,20 +16,18 @@ class PhoneService
 
     public function make(array $data, Model $model) : bool
     {
-        foreach ($data as $item) {
-            if ($item['main'] == 1) {
-                $this->setAllMainPhoneToFalse($model);
-            }
-//            dd($model);
-            $create = $model->phones()->create([
-                'type' => $item['type'],
-                'number' => $item['number'],
-                'main' => $item['main']
-            ]);
+        if ($data['main'] == 1) {
+            $this->setAllMainPhoneToFalse($model);
+        }
 
-            if (!$create) {
-                return false;
-            }
+        $create = $model->phones()->create([
+            'type' => $data['type'],
+            'number' => $data['number'],
+            'main' => $data['main'] == 1
+        ]);
+
+        if (!$create) {
+            return false;
         }
 
         return true;
@@ -46,7 +42,7 @@ class PhoneService
         return $model->phones()->find($data['id'])->update([
             'type' => $data['type'],
             'number' => $data['number'],
-            'main' => $data['main']
+            'main' => $data['main'] == 1
         ]);
     }
 

@@ -10,7 +10,6 @@ services:
       dockerfile: ./docker/Dockerfile
     image: condominio-api
     container_name: condominio-api-app
-    restart: unless-stopped
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html
@@ -21,7 +20,6 @@ services:
   db:
     image: mysql:5.7
     container_name: condominio-api-db
-    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -41,7 +39,6 @@ services:
   nginx:
     image: nginx:1.17-alpine
     container_name: condominio-api-nginx
-    restart: unless-stopped
     ports:
       - 8000:80
     volumes:

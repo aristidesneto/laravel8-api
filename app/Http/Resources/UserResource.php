@@ -24,7 +24,9 @@ class UserResource extends JsonResource
             'active' => $this->active,
             'isMaster' => \Tenant::isTenantMaster($this->tenant),
             'phones' => PhoneResource::collection($this->phones),
-            'tenant' => new TenantResource($this->tenant)
+            'tenant' => new TenantResource($this->tenant),
+            'roles' => ['admin', 'manager'],
+            'permissions' => ['users_view', 'users_edit', 'users_create', 'tenant_view', 'tenant_edit']
         ];
     }
 }

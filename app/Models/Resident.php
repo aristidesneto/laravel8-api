@@ -12,7 +12,7 @@ class Resident extends Model
     use HasFactory, TenantTrait, SoftDeletes;
 
     protected $fillable = [
-        'tenant_id', 'user_id', 'bloco', 'apartamento', 'tipo'
+        'tenant_id', 'bloco', 'apartamento', 'tipo'
     ];
 
     protected $dates = [

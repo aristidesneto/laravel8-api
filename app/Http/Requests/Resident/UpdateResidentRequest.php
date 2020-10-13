@@ -24,8 +24,8 @@ class UpdateResidentRequest extends FormRequest
      */
     public function rules()
     {
-        $uuid = request()->route('uuid');
-        $id = Resident::where('uuid', $uuid)->first()->user_id;
+        $uuid = request()->route('resident');
+        $id = Resident::where('uuid', $uuid)->first()->user->id;
 
         return [
             'name' => 'required|string|min:3',

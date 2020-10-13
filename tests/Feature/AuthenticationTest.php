@@ -37,7 +37,7 @@ class AuthenticationTest extends TestCase
                     'phones',
                     'tenant'
                 ]
-            ])->assertCookie('auth_token');
+            ])->assertCookie(config('tenant.token_name'));
 
         $this->assertAuthenticated();
     }
@@ -94,20 +94,4 @@ class AuthenticationTest extends TestCase
                 ]
             ]);
     }
-
-//    public function test_logout()
-//    {
-//        $user = User::factory()->make();
-//        $data = [
-//            'email' => $user->email,
-//            'password' => 'password'
-//        ];
-//
-//        $this->be($user, 'api');
-//        $this->assertAuthenticated();
-//
-//        $this->postJson(route('logout'), $data)
-//            ->assertJson(['message' => 'successful logout'])
-//            ->assertStatus(200);
-//    }
 }

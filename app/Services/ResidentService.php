@@ -59,7 +59,7 @@ class ResidentService implements Service
         $resident->fill($data);
 
         if ($resident->update($data)) {
-            $user = User::find($resident->user_id);
+            $user = $resident->user;
             $user->fill($data);
 
             if ($user->update($data)) {
