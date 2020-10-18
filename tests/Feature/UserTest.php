@@ -23,4 +23,17 @@ class UserTest extends TestCase
         $this->getJson(route('users.index'))
             ->assertStatus(200);
     }
+
+    public function test_get_users_unauthorization()
+    {
+        // Set tenant que não possui permissão na rota users
+        $tenant = Tenant::find(2);
+        \Tenant::setTenant($tenant);
+
+        $user = User::factory()->create();
+        $this->actingAs($user, 'api');
+
+        $this->getJson(route('users.index'))
+            ->assertStatus(401);
+    }
 }
