@@ -34,7 +34,11 @@ Route::middleware(['auth:api', 'tenant.master'])->prefix('v1')->group(function (
 
     // Tenants
     Route::apiResource('tenants', TenantController::class);
+
+    // Phones
     Route::get('tenant/phones/{uuid}', [TenantController::class, 'phones'])->name('tenants.phones');
+    Route::put('tenant/phone/{uuid}', [TenantController::class, 'phoneUpdate'])->name('tenants.phones.update');
+    Route::post('tenant/phone', [TenantController::class, 'phoneStore'])->name('tenants.phones.store');
 
     // Users
     Route::apiResource('users', UserController::class);

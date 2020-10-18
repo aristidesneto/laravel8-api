@@ -95,4 +95,41 @@ class TenantController extends Controller
 
         return response()->json($phones, 200);
     }
+
+    public function phoneUpdate(Request $request, string $uuid)
+    {
+        $tenant = Tenant::where('uuid', $uuid)->first();
+        $update = (new PhoneService())->update($request->all(), $tenant);
+
+        if ($update) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro alterado com sucesso'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro para alterar o registro'
+        ], 400);
+
+    }
+
+    public function phoneStore(Request $request)
+    {
+        $tenant = Tenant::where('uuid', $request->tenant_uuid)->first();
+        $store = (new PhoneService())->make($request->all(), $tenant);
+
+        if ($store) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cadastro realizado com sucesso'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro para realizar o cadastro'
+        ], 400);
+    }
 }

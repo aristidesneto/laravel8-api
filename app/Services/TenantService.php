@@ -57,6 +57,9 @@ class TenantService implements Service
         $tenant = Tenant::where('uuid', $uuid)->first();
 
         if ($tenant) {
+            $data['cep'] = str_replace('-', '', $data['cep']);
+            $data['cnpj'] = str_replace('.', '', str_replace('/', '', str_replace('-', '', $data['cnpj'])));
+
             $tenant->fill($data);
             return $tenant->update($data);
         }
