@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\v1\ResidentController;
 Route::post('v1/auth', [LoginController::class, 'login'])->name('login');
 Route::post('v1/logout', [LoginController::class, 'logout'])->middleware('auth:api')->name('logout');
 
-Route::middleware(['auth:api', 'tenant'])->prefix('v1')->group(function () {
+Route::middleware(['tenant', 'auth:api'])->prefix('v1')->group(function () {
 
     Route::get('authenticated/me', [LoginController::class, 'getAuthenticatedUser'])->name('me');
 

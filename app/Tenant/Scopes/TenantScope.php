@@ -6,7 +6,6 @@ use App\Tenant\ManagerTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 
 class TenantScope implements Scope
 {
@@ -24,6 +23,5 @@ class TenantScope implements Scope
         if ($tenant) {
             $builder->where('tenant_id', $tenant->id);
         }
-
     }
 }

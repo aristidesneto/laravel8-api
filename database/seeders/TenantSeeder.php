@@ -51,6 +51,17 @@ class TenantSeeder extends Seeder
                 'city' => 'São José dos Campos',
                 'state' => 'SP',
             ],
+            [
+                'name' => 'Edifício Ilha 222',
+                'cnpj' => '30856468000159',
+                'email' => 'conta3to@client2.com.br',
+                'address' => 'Rua Dr. Orlando Feirabend Filho',
+                'address_number' => '102',
+                'address_district' => 'Jardim Aquárius',
+                'cep' => '12249160',
+                'city' => 'São José dos Campos',
+                'state' => 'SP',
+            ],
         ];
 
         foreach ($list as $item) {
